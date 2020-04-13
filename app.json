@@ -1,0 +1,17 @@
+{
+  "name": "pruebaRN",
+  "displayName": "pruebaRN",
+  "expo": {
+    "name": "pruebaRN",
+    "slug": "pruebaRN",
+    "version": "1.0.0",
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ],
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
