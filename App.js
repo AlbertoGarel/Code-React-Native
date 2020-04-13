@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, Text, SafeAreaView, View} from 'react-native';
+import {StyleSheet, Text, SafeAreaView, View, SectionList, ActivityIndicator} from 'react-native';
 
 export default function App() {
 
@@ -16,13 +16,24 @@ export default function App() {
 
     return (
         <SafeAreaView style={styles.container}>
-          {
-            data.map((item, index)=>{
-              return (
-                  <Text>Numero: { index } => {item.date}</Text>
-              )
-            })
-          }
+            {isLoading ? <ActivityIndicator/> : (
+                <SectionList
+                    sections={[
+                        {title: 'prueba', data: data}
+                    ]}
+                    renderItem={({ item, index }) => (
+                        <View>
+                            <Text>{'numero: ' + index}, {item.date}</Text>
+                        </View>
+                    )}
+                    renderSectionHeader={({ section }) => (
+                        <View>
+                            <Text>{section.title}</Text>
+                        </View>
+                    )}
+                    keyExtractor={item => item.id}
+                />
+            )}
             <Text>esto es una prueba</Text>
         </SafeAreaView>
     );
