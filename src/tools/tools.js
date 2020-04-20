@@ -1,44 +1,44 @@
 //Auxiliary functions
 
-export const ordena = (listado) => {
+export const setSortDates = (arrDateItems) => {
+  arrDateItems.sort((a, b) => Date.parse(a['date']) - Date.parse(b['date']));
 
-  listado.sort((a, b) => Date.parse(a['date']) - Date.parse(b['date']));
-
-  return listado;
+  return arrDateItems;
 };
 
 //PARA OBTENER EL FORMATO DE DÍA ESPECÍFICO    **** PARA USAR EN ELEMENTO DONDE SE MOSTRARÁ LA HORA *****
-export const formatoHora = (itemKey) => {
+export const setFormatHour = (itemKey) => {
   return itemKey.split('T')[1].substring(0, 5);
 }
 
 //OBTENEMOS LA FECHA EN FORMATO DESADO    **** PARA USAR EN ELEMENTO DONDE SE MOSTRARÁ LA FECHA *****
-export const diaSemana = (titleFecha) => {
+export const dayWeek = (isoDate) => {
 
-  let dias = ["Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sábado"];
-  let meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+  let days = ["Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sábado"];
+  let months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
 
-  let fecha = titleFecha.split('T')[0].split('T')[0].split("-").reverse().join("/");
-  let date = new Date(fecha);
+  let takeDate = isoDate.split('T')[0].split('T')[0].split("-").reverse().join("/");
+  let date = new Date(takeDate);
 
-  let fechaNum = date.getDate();
-  let mes_name = date.getMonth();
+  let dateNum = date.getDate();
+  let month_name = date.getMonth();
 
-  return dias[date.getDay()] + " " + fechaNum + " de " + meses[mes_name];
+  return days[date.getDay()] + " " + dateNum + " de " + months[month_name];
 
 };
 
 //--------------------------------- PREPARE DYNAMICVTITLES AND DYNAMIC DATA --------------------------------
 
-export const setDatos = (data) => {
+export const setDataTitle = (data) => {
   let titles = [];
+
   for (let i = 0; i < Object.keys(data).length; i++) {
-    let miObjeto = new Object();
+    let titleObject = new Object();
 
-    miObjeto.title = diaSemana(Object.keys(data)[i]);
-    miObjeto.data = data[Object.keys(data)[i]];
+    titleObject.title = dayWeek(Object.keys(data)[i]);
+    titleObject.data = data[Object.keys(data)[i]];
 
-    titles.push(miObjeto);
+    titles.push(titleObject);
 
   }
   return titles;
@@ -46,22 +46,16 @@ export const setDatos = (data) => {
 
 //-------------------------------------------------- PRINCIPAL ----------------------------------------------
 
-export const preparaDatos = (lista) => {
-
-  // CLONAMOS EL ARRAY DE OBJETOS CON LOS DATOS    **** TRABAJAMOS CON ARRAY CLONADO PARA NO ALTERAR DATOS Y PODER RECURRIR A ELLOS DE NUEVO SIN NINGUNA LLAMADA AL SERVIDOR *****
-  let objectClon = JSON.parse(JSON.stringify(lista));
+export const prepareData = (data) => {
 
   //SEPARAMOS HORA DE DATE Y CREAMOS CAMPO NUEVO PARA USAR COMO KEY PARA AGRUPAR FECHAS
-  objectClon.map(item => {
+  data.map(item => {
     if (item.date) {
       item.fecha = item.date.split('T')[0].split("-").reverse().join("-");
     }
   });
 
-  //ORDENAR POR DÍA Y FECHA
-  ordena(objectClon);
-
-  const newData = objectClon.reduce((arr, itemArray) => {
+  const newData = data.reduce((arr, itemArray) => {
 
     //AGRUPAMOS POR FECHA
     (itemArray.fecha in arr) ? arr[itemArray.fecha].push(itemArray) : arr[itemArray.fecha] = [itemArray];

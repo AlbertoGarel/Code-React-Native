@@ -1,56 +1,44 @@
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text, SafeAreaView, View, SectionList, ActivityIndicator} from 'react-native';
 import FontAwesome, {SolidIcons} from 'react-native-fontawesome';
-import {preparaDatos, setDatos, ordena, formatoHora, diaSemana} from '../tools/tools'
+import {prepareData, setDataTitle, setFormatHour} from '../tools/tools';
+import {connect} from 'react-redux';
 
-function Sectionlist() {
-
-
+function Sectionlist({februaryDataRdx}) {
   //----------------------------------- SET STATES (getters and setters)  -------------------------------------
 
-  const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
 
-  //----------------------------------- CALL TO END-POINT  -------------------------------------
+  //----------------------------------- receives props from redux  -------------------------------------
 
   useEffect(() => {
-    fetch('https://rithmi-frontend-test.s3-eu-west-1.amazonaws.com/samples.json')
-      .then((response) => response.json())
-      .then((json) => {
-        setData(preparaDatos(json))
-      })
-      .catch((error) => console.error(error))
-      .finally(() => setLoading(false));
-  });
-
+    setData(prepareData(februaryDataRdx));
+  }, [februaryDataRdx]);
 
   //------------------------------ VIEW --------------------------------------------------------------------
 
   return (
     <SafeAreaView style={styles.container}>
-      {isLoading ? <ActivityIndicator/> : (
-        <SectionList
-          style={styles.primero}
-          sections={
-            setDatos(data)
-          }
-          renderItem={({item}) => (
-            <View style={styles.contItems}>
-              <Text style={styles.items}>{formatoHora(item.date)}</Text>
-              <Text style={styles.items}>{`${item.heartRate} ppm`}</Text>
-              <Text style={(item.hasAnomaly) ? styles.normal : styles.warning}>
-                <FontAwesome icon={SolidIcons.circle}/>
-              </Text>
-            </View>
-          )}
-          renderSectionHeader={({section}) => (
-            <View>
-              <Text style={styles.title}>{section.title}</Text>
-            </View>
-          )}
-          keyExtractor={item => item.id}
-        />
-      )}
+      <SectionList
+        sections={
+          setDataTitle(data)
+        }
+        renderItem={({item}) => (
+          <View style={styles.contItems}>
+            <Text style={styles.items}>{setFormatHour(item.date)}</Text>
+            <Text style={styles.items}>{`${item.heartRate} ppm`}</Text>
+            <Text style={(item.hasAnomaly) ? styles.normal : styles.warning}>
+              <FontAwesome icon={SolidIcons.circle}/>
+            </Text>
+          </View>
+        )}
+        renderSectionHeader={({section}) => (
+          <View>
+            <Text style={styles.title}>{section.title}</Text>
+          </View>
+        )}
+        keyExtractor={item => item.id}
+      />
     </SafeAreaView>
   );
 }
@@ -93,4 +81,8 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Sectionlist;
+const mapStateToProps = state => ({
+  februaryDataRdx: state.february.dataFetch,
+})
+
+export default connect(mapStateToProps)(Sectionlist);
