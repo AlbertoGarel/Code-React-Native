@@ -18,8 +18,9 @@ function Sectionlist({februaryDataRdx}) {
   //------------------------------ VIEW --------------------------------------------------------------------
 
   return (
-    <SafeAreaView style={styles.container}>
+
       <SectionList
+        style={styles.container}
         sections={
           setDataTitle(data)
         }
@@ -39,7 +40,7 @@ function Sectionlist({februaryDataRdx}) {
         )}
         keyExtractor={item => item.id}
       />
-    </SafeAreaView>
+
   );
 }
 
@@ -49,6 +50,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#F5FCFF',
     padding: 5,
+    paddingTop: 30,
   },
   title: {
     fontWeight: 'bold',

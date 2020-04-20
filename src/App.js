@@ -1,5 +1,7 @@
 import React from 'react';
+import {ScrollView} from 'react-native';
 import Sectionlist from "./components/Sectionlist";
+import Chart from "./components/Chart";
 import {Provider} from 'react-redux';
 import store from './redux/store';
 import {addData} from './redux/actions';
@@ -11,7 +13,10 @@ import {addData} from './redux/actions';
 export default function App() {
   return (
     <Provider store={store}>
-      <Sectionlist/>
+      <ScrollView>
+        <Chart />
+        <Sectionlist />
+      </ScrollView>
     </Provider>
   )
 };

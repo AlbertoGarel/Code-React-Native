@@ -6,18 +6,27 @@ export const setSortDates = (arrDateItems) => {
   return arrDateItems;
 };
 
+export const formatDate = itemKey => {
+  return itemKey
+    .split('T')[0]
+    .split('T')[0]
+    .split('-')
+    .reverse()
+    .join('/');
+};
+
 //PARA OBTENER EL FORMATO DE DÍA ESPECÍFICO    **** PARA USAR EN ELEMENTO DONDE SE MOSTRARÁ LA HORA *****
 export const setFormatHour = (itemKey) => {
   return itemKey.split('T')[1].substring(0, 5);
 }
 
 //OBTENEMOS LA FECHA EN FORMATO DESADO    **** PARA USAR EN ELEMENTO DONDE SE MOSTRARÁ LA FECHA *****
-export const dayWeek = (isoDate) => {
+export const dayWeek = isoDate => {
 
   let days = ["Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sábado"];
   let months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
 
-  let takeDate = isoDate.split('T')[0].split('T')[0].split("-").reverse().join("/");
+  let takeDate = formatDate(isoDate);
   let date = new Date(takeDate);
 
   let dateNum = date.getDate();
@@ -29,7 +38,7 @@ export const dayWeek = (isoDate) => {
 
 //--------------------------------- PREPARE DYNAMICVTITLES AND DYNAMIC DATA --------------------------------
 
-export const setDataTitle = (data) => {
+export const setDataTitle = data => {
   let titles = [];
 
   for (let i = 0; i < Object.keys(data).length; i++) {
@@ -46,7 +55,7 @@ export const setDataTitle = (data) => {
 
 //-------------------------------------------------- PRINCIPAL ----------------------------------------------
 
-export const prepareData = (data) => {
+export const prepareData = data => {
 
   //SEPARAMOS HORA DE DATE Y CREAMOS CAMPO NUEVO PARA USAR COMO KEY PARA AGRUPAR FECHAS
   data.map(item => {
