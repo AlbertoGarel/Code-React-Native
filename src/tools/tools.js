@@ -1,11 +1,12 @@
 //Auxiliary functions
 
+//Ordena fechas de menos a más actual
 export const setSortDates = (arrDateItems) => {
   arrDateItems.sort((a, b) => Date.parse(a['date']) - Date.parse(b['date']));
 
   return arrDateItems;
 };
-
+//Crea formato fecha AA/MM/DD con barras inclinadas
 export const formatDate = itemKey => {
   return itemKey
     .split('T')[0]
@@ -32,7 +33,7 @@ export const dayWeek = isoDate => {
   let dateNum = date.getDate();
   let month_name = date.getMonth();
 
-  return days[date.getDay()] + " " + dateNum + " de " + months[month_name];
+  return `${days[date.getDay()]} ${dateNum} de ${months[month_name]}`
 
 };
 
