@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text, SafeAreaView, View, SectionList, ActivityIndicator} from 'react-native';
-import FontAwesome, {SolidIcons, RegularIcons, BrandIcons} from 'react-native-fontawesome';
+import FontAwesome, {SolidIcons} from 'react-native-fontawesome';
 
-export default function App() {
+function Sectionlist() {
 
   //----------------------------------- AUXILIARY FUNCTIONS ----------------------------------------------
 
@@ -87,43 +87,43 @@ export default function App() {
 
   useEffect(() => {
     fetch('https://rithmi-frontend-test.s3-eu-west-1.amazonaws.com/samples.json')
-        .then((response) => response.json())
-        .then((json) => {
-          setData(preparaDatos(json))
-        })
-        .catch((error) => console.error(error))
-        .finally(() => setLoading(false));
+      .then((response) => response.json())
+      .then((json) => {
+        setData(preparaDatos(json))
+      })
+      .catch((error) => console.error(error))
+      .finally(() => setLoading(false));
   });
 
 
   //------------------------------ VIEW --------------------------------------------------------------------
 
   return (
-      <SafeAreaView style={styles.container}>
-        {isLoading ? <ActivityIndicator/> : (
-            <SectionList
-                style={styles.primero}
-                sections={
-                  setDatos(data)
-                }
-                renderItem={({item}) => (
-                    <View style={styles.contItems}>
-                      <Text style={styles.items}>{formatoHora(item.date)}</Text>
-                      <Text style={styles.items}>{`${item.heartRate} ppm`}</Text>
-                      <Text style={(item.hasAnomaly) ? styles.normal : styles.warning}>
-                        <FontAwesome icon={SolidIcons.circle}/>
-                      </Text>
-                    </View>
-                )}
-                renderSectionHeader={({section}) => (
-                    <View>
-                      <Text style={styles.title}>{section.title}</Text>
-                    </View>
-                )}
-                keyExtractor={item => item.id}
-            />
-        )}
-      </SafeAreaView>
+    <SafeAreaView style={styles.container}>
+      {isLoading ? <ActivityIndicator/> : (
+        <SectionList
+          style={styles.primero}
+          sections={
+            setDatos(data)
+          }
+          renderItem={({item}) => (
+            <View style={styles.contItems}>
+              <Text style={styles.items}>{formatoHora(item.date)}</Text>
+              <Text style={styles.items}>{`${item.heartRate} ppm`}</Text>
+              <Text style={(item.hasAnomaly) ? styles.normal : styles.warning}>
+                <FontAwesome icon={SolidIcons.circle}/>
+              </Text>
+            </View>
+          )}
+          renderSectionHeader={({section}) => (
+            <View>
+              <Text style={styles.title}>{section.title}</Text>
+            </View>
+          )}
+          keyExtractor={item => item.id}
+        />
+      )}
+    </SafeAreaView>
   );
 }
 
@@ -164,3 +164,5 @@ const styles = StyleSheet.create({
     color: '#777'
   }
 });
+
+export default Sectionlist;
