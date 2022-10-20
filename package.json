@@ -17,7 +17,7 @@
     "react-native-fontawesome": "^7.0.0",
     "react-native-gesture-handler": "~1.6.0",
     "react-native-pure-chart": "0.0.24",
-    "react-native-reanimated": "~1.7.0",
+    "react-native-reanimated": "~2.10.0",
     "react-native-screens": "~2.2.0",
     "react-native-unimodules": "~0.9.0",
     "react-native-web": "~0.11.7",
